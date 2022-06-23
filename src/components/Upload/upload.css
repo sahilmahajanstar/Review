@@ -1,0 +1,21 @@
+.form input[type='file'] {
+  display: none;
+}
+.form {
+  align-self: center;
+  width: 360px;
+  /* height: 360px; */
+}
+.uploadImage {
+  display: flex;
+  flex-direction: row;
+  background-color: grey;
+  padding: 10px;
+  border-radius: 10px;
+  width: fit-content;
+}
+
+.uploadImage h6 {
+  margin: 0;
+  margin-left: 10px;
+}
