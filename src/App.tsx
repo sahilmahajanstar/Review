@@ -4,7 +4,6 @@ import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from './config/redux/hooks'
 
 import Gallery from './components/Gallery'
-import ImageView from './components/ImageView'
 import Upload from './components/Upload/Upload'
 import { imageReducerAction } from './config/redux'
 import { useLocation } from './hooks/useLocation'

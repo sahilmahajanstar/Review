@@ -1,18 +1,47 @@
 import './upload.css'
 
-import { FormEvent, useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import Camera from './Camera'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Preview from './Preview'
 import React from 'react'
 import { faUpload } from '@fortawesome/free-solid-svg-icons'
+import { useAppSelector } from '../../config/redux/hooks'
 
 export default function Upload() {
   const [images, setImages] = useState<any>([])
-  const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-  }, [])
+  const coordinate = useAppSelector(
+    (state) => state.image.currentLocation?.coords
+  )
+  const onUpload = useCallback(async () => {
+    const form = new FormData()
+    for (let i = 0; i < images.length; i++) {
+      form.append('images', images[i])
+    }
+    form.set(
+      'geoPos',
+      JSON.stringify({ lat: coordinate?.latitude, long: coordinate?.longitude })
+    )
+    var xhr = new XMLHttpRequest()
+    xhr.open('post', 'http://localhost:5000/upload')
+    // xhr.setRequestHeader('Content-Type', 'multipart/form-data')
+    xhr.setRequestHeader('Access-Control-Allow-Origin', '*')
+    xhr.setRequestHeader('Accept', 'application/json')
+    xhr.send(form)
+    xhr.onload = function (e: any) {
+      if(e.currentTarget.status === 200) {
+        const response = JSON.parse(e.currentTarget.response)   
+        if(response.status === 'success') {
+          setImages([])
+          alert(response.data.message)
+        } else {
+          console.log(response);
+          alert(response.data.message)
+        }
+      }
+    }
+  }, [coordinate?.latitude, coordinate?.longitude, images])
 
   const addImage = useCallback(
     (newImages: any[]) => {
@@ -34,10 +63,21 @@ export default function Upload() {
     e.currentTarget.value = ''
   }, [])
 
+  const onSubmit = useCallback((e: any) => {
+    e.preventDefault()
+  }, [])
+
   return (
     <React.Fragment>
-      <div style={{flexWrap:'wrap', display: 'flex', flexDirection: 'row', alignSelf:'center' }}>
-        <form id="form" onSubmit={onSubmit} className="form">
+      <div
+        style={{
+          flexWrap: 'wrap',
+          display: 'flex',
+          flexDirection: 'row',
+          alignSelf: 'center',
+        }}
+      >
+        <form id="form" className="form" onSubmit={onSubmit}>
           <div>
             <input
               type="file"
@@ -65,10 +105,11 @@ export default function Upload() {
         style={{
           width: 'fit-content',
           alignSelf: 'center',
-          paddingRight:20,
-          paddingLeft:20,
-          marginTop: 10
+          paddingRight: 20,
+          paddingLeft: 20,
+          marginTop: 10,
         }}
+        onClick={onUpload}
       >
         Upload
       </button>

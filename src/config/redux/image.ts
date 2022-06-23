@@ -4,10 +4,18 @@ interface Permission {
   location: boolean
   camera: boolean
 }
+
+export interface Images {
+  size: number
+  mimeType: string
+  name: string
+  folder: string
+  geoPos: { lat: number; long: number }
+}
 interface State {
   permission: Permission
   currentLocation?: GeolocationPosition
-  images: string[]
+  images: Images[]
 }
 
 const initialState: State = {
@@ -15,19 +23,7 @@ const initialState: State = {
     location: false,
     camera: false,
   },
-  images: [
-    "https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg",
-    "https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg",
-    "https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg",
-    "https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg",
-    "https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg",
-    "https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg",
-    "https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg",
-    "https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg",
-    "https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg",
-    "https://image.shutterstock.com/image-photo/mountains-under-mist-morning-amazing-260nw-1725825019.jpg",
-    
-  ]
+  images: [],
 }
 
 const slice = createSlice({
@@ -50,11 +46,8 @@ const slice = createSlice({
       if (!locationPermission) state.permission.location = true
       state.currentLocation = data
     },
-    setImages: (
-      state: State,
-      action: PayloadAction<string[]>
-    ) => {
-      state.images = state.images.concat(action.payload)
+    setImages: (state: State, action: PayloadAction<Images[]>) => {
+      state.images = action.payload
     },
   },
 })
