@@ -15,7 +15,7 @@ export default function ImageView(props: Props) {
   return (
     <div onClick={selectImage} style={{ marginRight: 10, marginLeft: 10, marginTop: 10 }}>
       <img
-        src={'http://localhost:5000/' + props.src.folder + '/' + props.src.name}
+        src={'/' + props.src.folder + '/' + props.src.name}
         alt="alt"
         width={250}
         height={200}

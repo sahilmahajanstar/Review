@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../config/redux/hooks'
 import ImageView from './ImageView'
 import Modal from 'react-modal'
 import { imageReducerAction } from '../config/redux'
+import { url } from '../constants'
 
 //@ts-ignore
 
@@ -26,7 +27,7 @@ function LargeView(props: Props) {
         close
       </button>
       <img
-        src={'http://localhost:5000/' + src?.folder + '/' + src?.name}
+        src={url + '/' + src?.folder + '/' + src?.name}
         alt="alt"
         width={600}
         height={400}
@@ -49,7 +50,7 @@ export default function Gallery() {
 
   useEffect(() => {
     var xhr = new XMLHttpRequest()
-    xhr.open('get', 'http://localhost:5000/read')
+    xhr.open('get', `${url}/read`)
     xhr.send()
     xhr.onload = function (e: any) {
       if (e.currentTarget.status === 200) {

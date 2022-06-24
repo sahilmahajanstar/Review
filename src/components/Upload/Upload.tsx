@@ -1,5 +1,6 @@
 import './upload.css'
 
+import { useAppDispatch, useAppSelector } from '../../config/redux/hooks'
 import { useCallback, useState } from 'react'
 
 import Camera from './Camera'
@@ -7,13 +8,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Preview from './Preview'
 import React from 'react'
 import { faUpload } from '@fortawesome/free-solid-svg-icons'
-import { useAppSelector } from '../../config/redux/hooks'
+import { imageReducerAction } from '../../config/redux'
+import { url } from '../../constants'
 
 export default function Upload() {
   const [images, setImages] = useState<any>([])
   const coordinate = useAppSelector(
     (state) => state.image.currentLocation?.coords
   )
+  const dispatch = useAppDispatch()
   const onUpload = useCallback(async () => {
     const form = new FormData()
     for (let i = 0; i < images.length; i++) {
@@ -24,19 +27,28 @@ export default function Upload() {
       JSON.stringify({ lat: coordinate?.latitude, long: coordinate?.longitude })
     )
     var xhr = new XMLHttpRequest()
-    xhr.open('post', 'http://localhost:5000/upload')
+    xhr.open('post', `${url}/upload`)
     // xhr.setRequestHeader('Content-Type', 'multipart/form-data')
     xhr.setRequestHeader('Access-Control-Allow-Origin', '*')
     xhr.setRequestHeader('Accept', 'application/json')
     xhr.send(form)
     xhr.onload = function (e: any) {
-      if(e.currentTarget.status === 200) {
-        const response = JSON.parse(e.currentTarget.response)   
-        if(response.status === 'success') {
+      if (e.currentTarget.status === 200) {
+        const response = JSON.parse(e.currentTarget.response)
+        if (response.status === 'success') {
           setImages([])
+          var xhrImg = new XMLHttpRequest()
+          xhrImg.open('get', `${url}/read`)
+          xhrImg.send()
+          xhrImg.onload = function (e: any) {
+            if (e.currentTarget.status === 200) {
+              const response = JSON.parse(e.currentTarget.response)
+              dispatch(imageReducerAction.setImages(response.data))
+            }
+          }
           alert(response.data.message)
         } else {
-          console.log(response);
+          console.log(response)
           alert(response.data.message)
         }
       }
