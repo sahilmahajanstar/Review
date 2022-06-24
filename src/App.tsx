@@ -1,7 +1,7 @@
 import './App.css'
 
 import React, { useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from './config/redux/hooks'
+import { useAppDispatch } from './config/redux/hooks'
 
 import Gallery from './components/Gallery'
 import Upload from './components/Upload/Upload'

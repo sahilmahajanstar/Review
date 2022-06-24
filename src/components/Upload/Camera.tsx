@@ -1,6 +1,6 @@
 import '../../App.css'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef } from 'react'
 
 import Webcam from 'react-webcam'
 import { useCamera } from '../../hooks/useCamera'
