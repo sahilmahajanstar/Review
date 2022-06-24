@@ -13,6 +13,7 @@ import { url } from '../../constants'
 
 export default function Upload() {
   const [images, setImages] = useState<any>([])
+  const [uploading, setUploading] = useState<any>(false)
   const coordinate = useAppSelector(
     (state) => state.image.currentLocation?.coords
   )
@@ -32,11 +33,13 @@ export default function Upload() {
     xhr.setRequestHeader('Access-Control-Allow-Origin', 'https://main--transcendent-mooncake-b69ba6.netlify.app')
     xhr.setRequestHeader('Accept', 'application/json')
     xhr.send(form)
+    setUploading(true);
     xhr.onload = function (e: any) {
       if (e.currentTarget.status === 200) {
         const response = JSON.parse(e.currentTarget.response)
         if (response.status === 'success') {
           setImages([])
+          setUploading(false)
           var xhrImg = new XMLHttpRequest()
           xhrImg.open('get', `${url}/read`)
           xhrImg.send()
@@ -113,6 +116,7 @@ export default function Upload() {
         <Preview images={images} />
       </div>
       <button
+        disabled={uploading}
         className="btn"
         style={{
           width: 'fit-content',
@@ -123,7 +127,7 @@ export default function Upload() {
         }}
         onClick={onUpload}
       >
-        Upload
+        {uploading ? 'uploading' : 'upload'}
       </button>
     </React.Fragment>
   )
