@@ -17,6 +17,8 @@ interface Props {
 }
 function LargeView(props: Props) {
   const { isOpen, onClose, src } = props
+  console.log(url + '/' + src?.folder + '/' + src?.name);
+  
   return (
     //@ts-ignore
     <Modal isOpen={isOpen} onRequestClose={onClose} contentLabel="Image">

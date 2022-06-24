@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 
 import { Images } from '../config/redux/image'
+import { url } from '../constants'
 
 interface Props {
   src: Images
@@ -12,10 +13,13 @@ export default function ImageView(props: Props) {
   const selectImage = useCallback(()=> {
     props.setSelectedImage(props.src)
   },[props])
+  const src = props.src
+  
+  console.log(url + '/' + src?.folder + '/' + src?.name);
   return (
     <div onClick={selectImage} style={{ marginRight: 10, marginLeft: 10, marginTop: 10 }}>
       <img
-        src={'/' + props.src.folder + '/' + props.src.name}
+        src={url + '/' + src.folder + '/' + src.name}
         alt="alt"
         width={250}
         height={200}
