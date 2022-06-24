@@ -29,7 +29,7 @@ export default function Upload() {
     var xhr = new XMLHttpRequest()
     xhr.open('post', `${url}/upload`)
     // xhr.setRequestHeader('Content-Type', 'multipart/form-data')
-    xhr.setRequestHeader('Access-Control-Allow-Origin', '*')
+    xhr.setRequestHeader('Access-Control-Allow-Origin', 'https://main--transcendent-mooncake-b69ba6.netlify.app')
     xhr.setRequestHeader('Accept', 'application/json')
     xhr.send(form)
     xhr.onload = function (e: any) {
