@@ -53,7 +53,7 @@ export default function Upload() {
         }
       }
     }
-  }, [coordinate?.latitude, coordinate?.longitude, images])
+  }, [coordinate?.latitude, coordinate?.longitude, dispatch, images])
 
   const addImage = useCallback(
     (newImages: any[]) => {
